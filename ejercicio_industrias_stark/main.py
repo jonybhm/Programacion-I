@@ -64,7 +64,7 @@ def calcular_personaje_mas_pesado():
     print(personaje_mas_pesado["nombre"])      
     print(personaje_mas_pesado["peso"])
 
-#--------------PERSONAJE MAS LIVIANO------------------------
+#--------------PERSONAJE MAS LIVIANOs------------------------
 def calcular_personaje_mas_liviano():
     personaje_mas_liviano = lista_personajes[0]
     personaje_mas_liviano["peso"] = float(personaje_mas_liviano["peso"])
