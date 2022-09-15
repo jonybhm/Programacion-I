@@ -302,8 +302,8 @@ Con este se resuelve el Ej 5 del desafío #00
 '''
 
 def stark_calcular_imprimir_promedio_altura(lista_heroes:list,caracteristica:str):
-    if (lista_heroes > 0):
-        imprimir_dato(calcular_promedio((lista_heroes,caracteristica)))
+    if (len(lista_heroes) > 0):
+        imprimir_dato(calcular_promedio(lista_heroes,caracteristica))
     else:
         print("-1")
 
@@ -316,7 +316,7 @@ def imprimir_menu():
     mensaje = "\n1-Listar heroes \n2-Mostrar heroe mas alto"
     mensaje += "\n3-Mostrar heroe mas bajo\n4-Mostrar heroe mas pesado"
     mensaje += "\n5-Mostrar heroe mas liviano\n6-Mostrar promedio de altura"
-    mensaje += "\n7-Salir\n"
+    mensaje += "\n7-Salir\n> "
     
     return mensaje
 
@@ -364,7 +364,7 @@ def stark_marvel_app():
         elif(stark_menu_principal() == "3"):
             stark_calcular_imprimir_heroe(lista_personajes,"minimo","altura")
         elif(stark_menu_principal() == "4"):
-           stark_calcular_imprimir_heroe(lista_personajes,"maximo","peso")
+            stark_calcular_imprimir_heroe(lista_personajes,"maximo","peso")
         elif(stark_menu_principal() == "5"):
             stark_calcular_imprimir_heroe(lista_personajes,"minimo","peso")
         elif(stark_menu_principal() == "6"):
@@ -373,3 +373,4 @@ def stark_marvel_app():
             break
 
 stark_marvel_app()
+
