@@ -1,4 +1,7 @@
+from distutils.ccompiler import gen_preprocess_options
 import re
+from tkinter.ttk import Separator
+from urllib import response
 from data_stark import lista_personajes
 
 
@@ -54,22 +57,21 @@ def agregar_iniciales_nombre (lista_heroes:list)->bool:
     if (type(lista_heroes) == type(list()) and len(lista_heroes) > 0):
         for personaje in lista_heroes:
             definir_iniciales_nombre(personaje)
-            if (definir_iniciales_nombre(lista_heroes) == False):
-                print("El origen de datos no contiene el formato correcto")
-                break
-    else:
-        error = False
+        else:
+            error = False
     
     return error
 
 #print(agregar_iniciales_nombre(lista_personajes))
 #print(lista_personajes)
-        
+
+       
 def stark_imprimir_nombres_con_iniciales(lista_heroes:list):
     '''
     Imprime la lista con los nuevos datos agregados (iniciales)
     Recibe la lista importada de personajes
     '''
+    
     error = True
     if (type(lista_heroes) == type(list()) and len(lista_heroes) > 0):
         agregar_iniciales_nombre(lista_heroes)
@@ -223,6 +225,22 @@ def sanitizar_dato(heroe:dict,clave:str,tipo_dato:str):
     
 #sanitizar_dato(lista_personajes[10],"fuerza","ENTERO")
 
+def stark_normalizar_datos(lista_heroes:list):
+    if (len(lista_heroes) > 0):
+        for personaje in lista_heroes:
+            sanitizar_dato(personaje,"altura","FLOTANTE")
+            sanitizar_dato(personaje,"peso","FLOTANTE")
+            sanitizar_dato(personaje,"color_ojos","STRING")
+            sanitizar_dato(personaje,"color_pelo","STRING")
+            sanitizar_dato(personaje,"fuerza","ENTERO")
+            sanitizar_dato(personaje,"inteligencia","STRING")
+    else:
+        "Error: la lista esta vacia"
+
+    print("Datos normalizados") 
+
+#stark_normalizar_datos(lista_personajes)
+
 def generar_indice_nombres(lista_heroes:list)->list:
     '''
     la funcion genera una lista con los cada palabra que componen los nombres de los personajes
@@ -240,3 +258,115 @@ def generar_indice_nombres(lista_heroes:list)->list:
     
 #print(generar_indice_nombres(lista_personajes))
 
+def stark_imprimir_indice_nombre(lista_heroes:list):
+    mensaje = ""
+    if(len(lista_heroes)>0):
+        for nombre in generar_indice_nombres(lista_heroes):
+            mensaje += "{0}-".format(nombre)
+
+    print(mensaje)
+
+#stark_imprimir_indice_nombre(lista_personajes)
+
+def convertir_cm_a_mtrs(valor_cm:str)->float:
+    valor_en_cm = sanitizar_flotante(valor_cm)
+    if(type(valor_en_cm) == type(float())):
+        valor_en_mtrs = valor_en_cm / 100
+        return valor_en_mtrs
+
+#print(convertir_cm_a_mtrs("150.5"))  
+
+def generar_separador(patron:str,largo:int,imprimir=True)->str:
+    separador = ""
+    if (len(patron) > 0 and len(patron) < 3 and 
+    largo > 0 and largo < 236):
+        for largo_patron in range(largo):
+            separador += "{0}".format(patron)
+        return separador
+    else:
+        print ("N/A")
+    
+    
+#print(generar_separador("/",200))
+
+def generar_encabezado(titulo:str)->str:
+    titulo_con_separadores = "{0}\n{1}\n{0}".format(generar_separador("*",178),titulo)
+    return titulo_con_separadores
+
+#print(generar_encabezado("TITULO"))
+
+def imprimir_ficha_heroe(heroe:dict):
+    stark_generar_codigos_heroes (lista_personajes)
+    ficha_personaje = "{0}\nNOMBRE DEL HEROE: {1} ({2})".format(generar_encabezado("PRINCIPAL"),heroe["nombre"],extraer_iniciales(heroe["nombre"]))
+    ficha_personaje += "\nIDENTIDAD SECRETA: {0}".format(heroe["identidad"])
+    ficha_personaje += "\nCONSULTORA: {0}".format(heroe["empresa"])
+    ficha_personaje += "\nCODIGO DE HEROE: {0}".format(generar_codigo_heroe(heroe["id"],heroe["genero"]))
+    ficha_personaje += "\n{0}\nALTURA: {1:.2f} Mtrs.".format(generar_encabezado("FISICO"),convertir_cm_a_mtrs(heroe["altura"]))
+    ficha_personaje += "\nPESO: {0:.2f} Kg.".format(float(heroe["peso"]))
+    ficha_personaje += "\nFUERZA: {0} N".format(heroe["fuerza"])
+    ficha_personaje += "\n{0}\nCOLOR DE OJOS: {1}".format(generar_encabezado("SEÑAS PARTICULARES"),heroe["color_ojos"])
+    ficha_personaje += "\nCOLOR DE PELO: {0}".format(heroe["color_pelo"])
+    print (ficha_personaje)
+
+
+ 
+#print(imprimir_ficha_heroe(lista_personajes[10]))
+
+
+def stark_navegar_fichas(lista_heroes:list):
+    index = 0
+    imprimir_ficha_heroe(lista_heroes[index])
+    respuesta = input ("[1] Ir a la izquierda\n[2] Ir a la derecha\n[S] Salir\n>").upper()
+    while (respuesta != "S" and respuesta != "1" and respuesta != "2"):
+        respuesta = input ("[1] Ir a la izquierda\n[2] Ir a la derecha\n[S] Salir\n>").upper()
+
+    while (respuesta !="S"):
+        if(respuesta == "1"):
+            index += -1
+            imprimir_ficha_heroe(lista_heroes[index])
+        elif(respuesta == "2"):
+            index += 1
+            imprimir_ficha_heroe(lista_heroes[index])
+        respuesta = input ("[1] Ir a la izquierda\n[2] Ir a la derecha\n[S] Salir\n>").upper()
+
+
+#stark_navegar_fichas(lista_personajes)
+
+def imprimir_menu():
+    menu = "\n1 - Imprimir la lista de nombres junto con sus iniciales"
+    menu += "\n2 - Generar códigos de héroes"
+    menu += "\n3 - Normalizar datos"
+    menu += "\n4 - Imprimir índice de nombres"
+    menu += "\n5 - Navegar fichas"
+    menu += "\n6 - Salir\n>"
+    print (menu)
+
+def stark_menu_principal()->str:
+    respuesta = input(imprimir_menu())
+    return respuesta
+
+
+def stark_marvel_app_3(lista_heroes:list):
+    respuesta = stark_menu_principal()
+    
+    while(respuesta!="6"):
+        if(respuesta == "1"):
+            stark_imprimir_nombres_con_iniciales(lista_heroes)
+            respuesta = stark_menu_principal()
+        elif(respuesta == "2"):
+            stark_generar_codigos_heroes(lista_heroes)
+            respuesta = stark_menu_principal()
+        elif(respuesta == "3"):
+            stark_normalizar_datos(lista_heroes)
+            respuesta = stark_menu_principal()
+        elif(respuesta == "4"):
+            stark_imprimir_indice_nombre(lista_heroes)
+            respuesta = stark_menu_principal()
+        elif(respuesta == "5"):
+            stark_navegar_fichas(lista_heroes)
+            respuesta = stark_menu_principal()
+        else:
+            respuesta = stark_menu_principal()      
+
+
+stark_marvel_app_3(lista_personajes)
