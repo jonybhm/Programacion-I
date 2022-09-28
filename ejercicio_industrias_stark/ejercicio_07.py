@@ -1,3 +1,25 @@
+'''
+Desafío #01:
+Agregar al código elaborado para cumplir el desafío #00 los siguientes puntos,
+utilizando un menú que permita acceder a cada uno de los puntos por separado.
+Recorrer la lista imprimiendo por consola el nombre de cada superhéroe de género M
+Recorrer la lista imprimiendo por consola el nombre de cada superhéroe de género F
+Recorrer la lista y determinar cuál es el superhéroe más alto de género M 
+Recorrer la lista y determinar cuál es el superhéroe más alto de género F 
+Recorrer la lista y determinar cuál es el superhéroe más bajo  de género M 
+Recorrer la lista y determinar cuál es el superhéroe más bajo  de género F 
+Recorrer la lista y determinar la altura promedio de los  superhéroes de género M
+Recorrer la lista y determinar la altura promedio de los  superhéroes de género F
+Informar cual es el Nombre del superhéroe asociado a cada uno de los indicadores anteriores (ítems C a G)
+Determinar cuántos superhéroes tienen cada tipo de color de ojos.
+Determinar cuántos superhéroes tienen cada tipo de color de pelo.
+Determinar cuántos superhéroes tienen cada tipo de inteligencia (En caso de no tener, Inicializarlo con ‘No Tiene’). 
+Listar todos los superhéroes agrupados por color de ojos.
+Listar todos los superhéroes agrupados por color de pelo.
+Listar todos los superhéroes agrupados por tipo de inteligencia
+'''
+import re
+
 from data_stark import lista_personajes
 '''
 
@@ -133,74 +155,66 @@ def listar_heroes_misma_caracteristica(lista_heroes:list,caracteristica:str)->li
     #print(set_ordenado_por_caracteristica)    
     return lista_ordenada_por_caracteristica
 
-
-while (True):
-    mensaje = "\n1-Listar heroes masculinos\n2-Listar heroes femeninos"
-    mensaje += "\n3-Mostrar heroe mas alto masculino\n4-Mostrar heroe mas alto femenino"
-    mensaje += "\n5-Mostrar heroe mas bajo masculino\n6-Mostrar heroe mas bajo femenino"
-    mensaje += "\n7-Mostrar promedio alturas heroes masculino\n8-Mostrar promedio alturas heroes femenino"
-    mensaje += "\n9-Mostrar cantidad heroes tipo de pelo\n10-Mostrar cantidad heroes tipo de ojos\n11-Mostrar cantidad heroes tipo de inteligencia"
-    mensaje += "\n12-Listar heroes tipo de pelo\n13-Listar heroes tipo de ojos\n14-Listar heroes tipo de inteligencia\n15-Salir\n"
+def imprimir_menu_desafio_5():
+    
+    mensaje = "\nA. Recorrer la lista imprimiendo por consola el nombre de cada superhéroe de género M"
+    mensaje += "\nB. Recorrer la lista imprimiendo por consola el nombre de cada superhéroe de género F"
+    mensaje += "\nC. Recorrer la lista y determinar cuál es el superhéroe más alto de género M"
+    mensaje += "\nD. Recorrer la lista y determinar cuál es el superhéroe más alto de género F"
+    mensaje += "\nE. Recorrer la lista y determinar cuál es el superhéroe más bajo de género M"
+    mensaje += "\nF. Recorrer la lista y determinar cuál es el superhéroe más bajo de género F"
+    mensaje += "\nG. Recorrer la lista y determinar la altura promedio de los superhéroes de género M"
+    mensaje += "\nH. Recorrer la lista y determinar la altura promedio de los superhéroes de género F"
+    mensaje += "\nI. Determinar cuántos superhéroes tienen cada tipo de color de ojos."
+    mensaje += "\nJ. Determinar cuántos superhéroes tienen cada tipo de color de pelo."
+    mensaje += "\nK. Determinar cuántos superhéroes tienen cada tipo de inteligencia (En caso de no tener, Inicializarlo con ‘No Tiene’)."
+    mensaje += "\nL. Listar todos los superhéroes agrupados por color de ojos."
+    mensaje += "\nM. Listar todos los superhéroes agrupados por color de pelo."
+    mensaje += "\nN. Listar todos los superhéroes agrupados por tipo de inteligencia"
+    mensaje += "\nO-Z. Salir\n"
     respuesta = input(mensaje)
-
-    if(respuesta == "1"):
-        recorrer_lista_personajes_por_genero(lista_personajes,"M")
-    elif(respuesta == "2"):
-        recorrer_lista_personajes_por_genero(lista_personajes,"F")
-    elif(respuesta == "3"):
-        print(calcular_personaje_mas_alto_bajo_por_genero(lista_personajes,"M","alto"))
-    elif(respuesta == "4"):
-        print(calcular_personaje_mas_alto_bajo_por_genero(lista_personajes,"F","alto"))
-    elif(respuesta == "5"):
-        print(calcular_personaje_mas_alto_bajo_por_genero(lista_personajes,"M","bajo"))
-    elif(respuesta == "6"):
-        print(calcular_personaje_mas_alto_bajo_por_genero(lista_personajes,"M","bajo"))
-    elif(respuesta == "7"):
-        print(calcular_promedio_alturas_por_genero(lista_personajes,"M"))
-    elif(respuesta == "8"):
-        print(calcular_promedio_alturas_por_genero(lista_personajes,"F"))
-    elif(respuesta == "9"):
-        print(determinar_cantidad_caracteristica(lista_personajes,"color_pelo"))
-    elif(respuesta == "10"):
-        print(determinar_cantidad_caracteristica(lista_personajes,"color_ojos"))
-    elif(respuesta == "11"):
-        print(determinar_cantidad_caracteristica(lista_personajes,"inteligencia"))
-    elif(respuesta == "12"):
-        print(listar_heroes_misma_caracteristica(lista_personajes,"color_pelo"))
-    elif(respuesta == "13"):
-        print(listar_heroes_misma_caracteristica(lista_personajes,"color_ojos"))
-    elif(respuesta == "14"):
-        print(listar_heroes_misma_caracteristica(lista_personajes,"inteligencia"))
-    elif(respuesta == "15"):
-        break
+    return respuesta
 
 
+    
 
+def stark_menu_principal_desafio_5(lista_heroes:list):
 
-'''
-Desafío #01:
-Agregar al código elaborado para cumplir el desafío #00 los siguientes puntos,
-utilizando un menú que permita acceder a cada uno de los puntos por separado.
-Recorrer la lista imprimiendo por consola el nombre de cada superhéroe de género M
-Recorrer la lista imprimiendo por consola el nombre de cada superhéroe de género F
-Recorrer la lista y determinar cuál es el superhéroe más alto de género M 
-Recorrer la lista y determinar cuál es el superhéroe más alto de género F 
-Recorrer la lista y determinar cuál es el superhéroe más bajo  de género M 
-Recorrer la lista y determinar cuál es el superhéroe más bajo  de género F 
-Recorrer la lista y determinar la altura promedio de los  superhéroes de género M
-Recorrer la lista y determinar la altura promedio de los  superhéroes de género F
-Informar cual es el Nombre del superhéroe asociado a cada uno de los indicadores anteriores (ítems C a G)
-Determinar cuántos superhéroes tienen cada tipo de color de ojos.
-Determinar cuántos superhéroes tienen cada tipo de color de pelo.
-Determinar cuántos superhéroes tienen cada tipo de inteligencia (En caso de no tener, Inicializarlo con ‘No Tiene’). 
-Listar todos los superhéroes agrupados por color de ojos.
-Listar todos los superhéroes agrupados por color de pelo.
-Listar todos los superhéroes agrupados por tipo de inteligencia
-'''
-
-
-
-
-
+    respuesta = re.findall("[A-Za-z]{1}",imprimir_menu_desafio_5())
+    
+    while (len(respuesta) > 0):
+                
+        if(respuesta == ['A']):
+            recorrer_lista_personajes_por_genero(lista_heroes,"M")
+        elif(respuesta == ['B']):
+            recorrer_lista_personajes_por_genero(lista_heroes,"F")
+        elif(respuesta == ['C']):
+            print(calcular_personaje_mas_alto_bajo_por_genero(lista_heroes,"M","alto"))
+        elif(respuesta == ['D']):
+            print(calcular_personaje_mas_alto_bajo_por_genero(lista_heroes,"F","alto"))
+        elif(respuesta == ['E']):
+            print(calcular_personaje_mas_alto_bajo_por_genero(lista_heroes,"M","bajo"))
+        elif(respuesta == ['F']):
+            print(calcular_personaje_mas_alto_bajo_por_genero(lista_heroes,"M","bajo"))
+        elif(respuesta == ['G']):
+            print(calcular_promedio_alturas_por_genero(lista_heroes,"M"))
+        elif(respuesta == ['H']):
+            print(calcular_promedio_alturas_por_genero(lista_heroes,"F"))
+        elif(respuesta == ['I']):
+            print(determinar_cantidad_caracteristica(lista_heroes,"color_pelo"))
+        elif(respuesta == ['J']):
+            print(determinar_cantidad_caracteristica(lista_heroes,"color_ojos"))
+        elif(respuesta == ['K']):
+            print(determinar_cantidad_caracteristica(lista_heroes,"inteligencia"))
+        elif(respuesta == ['L']):
+            print(listar_heroes_misma_caracteristica(lista_heroes,"color_pelo"))
+        elif(respuesta == ['M']):
+            print(listar_heroes_misma_caracteristica(lista_heroes,"color_ojos"))
+        elif(respuesta == ['N']):
+            print(listar_heroes_misma_caracteristica(lista_heroes,"inteligencia"))
+        
+    
+        respuesta = re.findall("[A-Za-z]{1}",imprimir_menu_desafio_5())
+    
 
 

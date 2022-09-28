@@ -81,4 +81,3 @@ print("La persona mas veterna es {} con una edad de {} años\n".format(nombre_he
 print("La cantidad total de heroina de 'Fuerza' y 'Magia' es {}\n".format(contador_heroinas_fuerza+contador_heroinas_magia))
 print("El promedio de edad de las heroinas es de {} años\n".format(promedio_edad_heroinas))
 print("El promedio de edad de los heroes de 'Fuerza' es de {} años\n".format(promedio_edad_heroes_fuerza))
-
