@@ -1,19 +1,6 @@
 import json
 import re
 
-def leer_json(ruta_al_archivo:str)->list:
-    '''
-    Carga de un archivo tipo json la informacion del mismo
-    Recivo un string que muestra la ruta del archivo json
-    Devuelve una lista con la informacion del json
-    '''
-    with open(ruta_al_archivo,"r") as archivo:
-        lista_de_dic_del_archivo = json.load (archivo)
-    
-    return lista_de_dic_del_archivo["heroes"]
-
-#print(leer_json(r"C:\Users\JONY\Desktop\Programación\1 er cuatrimestre\Programacion-I\repaso_dos\data_stark.json"))
-
 '''
 {
 "nombre": "Howard the Duck",
@@ -25,6 +12,33 @@ def leer_json(ruta_al_archivo:str)->list:
 }
 '''
 
+#------------------------IMPORTAR DESDE ARCHIVO JSON------------------------
+
+def leer_json(ruta_al_archivo:str)->list:
+    '''
+    Carga de un archivo tipo json la informacion del mismo
+    Recivo un string que muestra la ruta del archivo json
+    Devuelve una lista con la informacion del json
+    '''
+    with open(ruta_al_archivo,"r") as archivo:
+        lista_de_dic_del_archivo = json.load (archivo)
+    
+    return lista_de_dic_del_archivo["heroes"]
+
+
+#------------------------MOSTRAR ELEMENTOS DE LA LISTA POR NOMBRE Y VALOR ------------------------
+
+def mostrar (lista:list,clave:str):
+    '''
+    La funcion imprime en pantalla una lista solo con una clave y los nombres de los heroes correspondientes
+    Recibe una lista original y un str que representa una clave
+    '''
+    for elemento in lista:
+        print("{0}: {1}/Heroe: {2}".format(clave,elemento[clave],elemento["nombre"]))
+
+
+#------------------------LISTAR HEROES ------------------------
+
 def listar_heroes(lista_heroes:list):
     '''
     La funcion imprime los heroes de la lista
@@ -34,8 +48,10 @@ def listar_heroes(lista_heroes:list):
     for heroe in lista_heroes:
         print("\nNombre:{0} / Identidad: {1} / Altura: {2} cm / Peso: {3} kg / Fuerza: {4} N / Inteligencia: {5}"
         .format(heroe["nombre"],heroe["identidad"],heroe["altura"],heroe["peso"],heroe["fuerza"],heroe["inteligencia"]))
+
+
     
-#listar_heroes(leer_json(r"C:\Users\JONY\Desktop\Programación\1 er cuatrimestre\Programacion-I\repaso_dos\data_stark.json"))
+#------------------------CALCULAR MINIMO ------------------------
 
 def calcular_indice_minimo(lista_heroes:list,clave:str)->int:
     '''
@@ -51,7 +67,9 @@ def calcular_indice_minimo(lista_heroes:list,clave:str)->int:
 
 lista_heroes_orignal = leer_json(r"C:\Users\JONY\Desktop\Programación\1 er cuatrimestre\Programacion-I\repaso_dos\data_stark.json")
   
-#print(calcular_indice_minimo(lista_heroes_orignal,"fuerza"))
+
+#------------------------ORDENAR MODO ASCENDENTE Y DESCENDENTE ------------------------
+
 
 def ordenar_updown_downup (lista_heroes:list,clave:str,orden:str="asc")->list:
     '''
@@ -70,15 +88,8 @@ def ordenar_updown_downup (lista_heroes:list,clave:str,orden:str="asc")->list:
 
     return lista_ordenada
 
-def mostrar (lista:list,clave:str):
-    for elemento in lista:
-        print("{0}/{1}".format(elemento[clave],elemento["nombre"]))
 
-
-#lista_ordenada = ordenar_updown_downup(lista_heroes_orignal,"altura")
-
-#mostrar(lista_ordenada)
-
+#------------------------CALCULAR PROMEDIO ------------------------
 
 def calcular_promedio (lista_heroes:list,clave:str,condicion_promedio:str)->list:
     '''
@@ -106,6 +117,8 @@ def calcular_promedio (lista_heroes:list,clave:str,condicion_promedio:str)->list
                      
     return lista_valores_en_relacion_al_promedio
 
+#------------------------BUSCAR POR TIPO DE INTELIGENCIA ------------------------
+
 def buscar_por_inteligencia (lista_heroes:list,tipo_inteligencia:str):
     '''
     Busca y lista heroes por inteligencia
@@ -119,7 +132,8 @@ def buscar_por_inteligencia (lista_heroes:list,tipo_inteligencia:str):
             print ("\nNombre: {0}".format(nombre_heroe))
         
     
-#buscar_por_inteligencia(lista_heroes_orignal,"hola")
+
+#------------------------EXPORTAR LISTA A ARCHIVO CSV ------------------------
 
 def expotar_a_archivo_csv(lista_heroes_segun_opcion:list,nombre_y_ruta_archivo:str):
     with open(nombre_y_ruta_archivo,"w") as archivo:
@@ -128,4 +142,3 @@ def expotar_a_archivo_csv(lista_heroes_segun_opcion:list,nombre_y_ruta_archivo:s
             .format(heroe["nombre"],heroe["identidad"],heroe["altura"]
             ,heroe["peso"],heroe["fuerza"],heroe["inteligencia"]))
 
-#r"C:\Users\JONY\Desktop\Programación\1 er cuatrimestre\Programacion-I\repaso_dos\data_stark.csv"
