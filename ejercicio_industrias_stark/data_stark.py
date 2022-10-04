@@ -1,7 +1,7 @@
 lista_personajes =\
 [
   {
-    "nombre": "Howard the Duck",
+    "nombre": "howard the Duck",
     "identidad": "Howard (Last name unrevealed)",
     "empresa": "Marvel Comics",
     "altura": "79.349999999999994",

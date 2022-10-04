@@ -47,7 +47,7 @@ def validar_flotante(numero_str:str)->float:
             numero = -3  
     return numero
 
-def validar_string (valor_str:str,valor_por_defecto = "-")->str:
+def validar_string_asc_desc (valor_str:str,valor_por_defecto = "-")->str:
     '''
     La funcion verifica el valor si es un string sin numeros,en caso de tener barras las reemplaza por espacios
     Recibe un valor en str
@@ -57,6 +57,42 @@ def validar_string (valor_str:str,valor_por_defecto = "-")->str:
     str_sin_numeros = re.match(r"asc|desc",valor_str)
     if (str_sin_numeros and len(posee_numero) == 0):
         str_valor = valor_str
+        str_valor = str_valor.replace("/"," ")
+        str_valor = str_valor.lower()
+                
+    else:
+        str_valor = "N/A"
+    
+    return str_valor
+
+def validar_string_mayor_menor (valor_str:str,valor_por_defecto = "-")->str:
+    '''
+    La funcion verifica el valor si es un string sin numeros,en caso de tener barras las reemplaza por espacios
+    Recibe un valor en str
+    Devuelve el valor sanitizado 
+    '''
+    posee_numero = re.findall("[0-9]+",valor_str)
+    str_sin_numeros = re.match(r"mayor|menor",valor_str)
+    if (str_sin_numeros and len(posee_numero) == 0):
+        str_valor = valor_str
+        str_valor = str_valor.replace("/"," ")
+        str_valor = str_valor.lower()
+                
+    else:
+        str_valor = "N/A"
+    
+    return str_valor
+
+def validar_string (valor_str:str,valor_por_defecto = "-")->str:
+    '''
+    La funcion verifica el valor si es un string sin numeros,en caso de tener barras las reemplaza por espacios
+    Recibe un valor en str
+    Devuelve el valor sanitizado 
+    '''
+    posee_numero = re.findall("[0-9]+",valor_str)
+    str_sin_numeros = re.findall("[a-zA-Z/ ]+",valor_str)
+    if (len(str_sin_numeros) > 0 and len(posee_numero) == 0):
+        str_valor = str_sin_numeros[0]
         str_valor = str_valor.replace("/"," ")
         str_valor = str_valor.lower()
                 

@@ -1,6 +1,8 @@
 import json
 import re
 
+from numpy import indices
+
 '''
 {
 "nombre": "Howard the Duck",
@@ -87,6 +89,28 @@ def ordenar_updown_downup (lista_heroes:list,clave:str,orden:str="asc")->list:
         lista_ordenada.reverse()
 
     return lista_ordenada
+
+#------------------------ORDENAR MODO ASCENDENTE Y DESCENDENTE SELECCION------------------------
+
+
+def ordenar_2 (lista_heroes:list,clave:str,orden:str)->list:
+    '''
+    Ordena la lista de menor a mayor o viceverza 
+    Recibe la lista de heroes, un str que representa la clave y un str que representa el tipo de ordenamiento
+    Devuelve la lista ordenada segun lo indicado
+    '''
+    lista_a_ordenar = lista_heroes.copy()
+    i_min = 0
+    for i in range(len(lista_a_ordenar)):
+        i_min = calcular_indice_minimo(lista_a_ordenar[i:],clave) + i
+        lista_a_ordenar[i],lista_a_ordenar[i_min] = lista_a_ordenar[i_min],lista_a_ordenar[i]       
+
+    if(orden == "desc"):
+        lista_a_ordenar.reverse()     
+        
+    return lista_a_ordenar
+
+#mostrar(ordenar_2(lista_heroes_orignal,"peso","desc"),"peso")
 
 
 #------------------------CALCULAR PROMEDIO ------------------------
