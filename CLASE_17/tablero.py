@@ -3,13 +3,7 @@ import math
 import random
 import tarjeta
 from constantes import *
-'''
-ANCHO_PANTALLA = 500
-ALTO_PANTALLA = 550
-ALTO_TEXTO = 50
-CANTIDAD_TARJETAS_H = 2
-CANTIDAD_TARJETAS_V = 2
-'''
+
 def init():
     '''
     Crea una lista de tarjetas
@@ -19,19 +13,16 @@ def init():
     d_tablero = {}
     lista_tarjetas = []
     i = 1
-    for x in range(0,ANCHO_PANTALLA,ANCHO_TARJETA):
-        for y in range(0,ALTO_PANTALLA-ALTO_TEXTO,ALTO_TARJETA):
+    for x in range(0,CANTIDAD_TARJETAS_H*ANCHO_TARJETA,ANCHO_TARJETA):
+        for y in range(0,CANTIDAD_TARJETAS_V*ALTO_TARJETA,ALTO_TARJETA):
             if(i > CANTIDAD_TARJETAS_UNICAS):
                 tarjeta_test = tarjeta.init("0{0}.png".format(i-CANTIDAD_TARJETAS_UNICAS),r"00.png",x,y)
             else:
                 tarjeta_test = tarjeta.init("0{0}.png".format(i),r"00.png",x,y)
-            tarjeta_test["visible"] = True
             lista_tarjetas.append(tarjeta_test)
             i = i + 1
-            
-
     d_tablero["l_tarjetas"] = lista_tarjetas
-
+    d_tablero["tiempo_ultimo_destape"] = 0
     return d_tablero
 
 def colicion(d_tablero,pos_xy):
@@ -41,17 +32,29 @@ def colicion(d_tablero,pos_xy):
     Retorna el indice de la tarjeta que colisiono con la coordenada
     '''
     lista_tarjetas = d_tablero["l_tarjetas"]
-    if (tarjeta.cantidad_tarjetas_visibles_no_descubiertas(lista_tarjetas) < 2):        
+    if(tarjeta.cantidad_tarjetas_visibles_no_descubiertas(lista_tarjetas) < 2):
         for aux_tarjeta in lista_tarjetas:
-            if aux_tarjeta["rect"].collidepoint(pos_xy):
-                aux_tarjeta["visible"] = True
+            if(aux_tarjeta["rect"].collidepoint(pos_xy)):
+                aux_tarjeta["visible"]=True
+                d_tablero["tiempo_ultimo_destape"] = pygame.time.get_ticks()
 
-def update(d_tablero,tiempo):
+def update(d_tablero):
     '''
     verifica si es necesario actualizar el estado de alguna tarjeta, en funcion de su propio estado y el de las otras
     Recibe como parametro el tablero y el tiempo transcurrido desde el ultimo llamado
     '''
-    pass
+    tiempo_actual = pygame.time.get_ticks()
+    if(tiempo_actual - d_tablero["tiempo_ultimo_destape"] > 3000 and d_tablero["tiempo_ultimo_destape"] > 0):
+        d_tablero["tiempo_ultimo_destape"] = 0
+        lista_tarjetas = d_tablero["l_tarjetas"]
+        for aux_tarjeta in lista_tarjetas:
+            if(aux_tarjeta["descubierto"]==False):
+                aux_tarjeta["visible"]=False
+    
+    if(d_tablero["tiempo_ultimo_destape"] > 0):
+        if(tarjeta.match(d_tablero["l_tarjetas"])):
+             d_tablero["tiempo_ultimo_destape"] = 0
+
 
 def render(d_tablero,pantalla_juego):
     '''
