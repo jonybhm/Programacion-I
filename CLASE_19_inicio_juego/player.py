@@ -7,7 +7,8 @@ class Player:
     def __init__(self,x,y,speed_walk,speed_run,gravity,jump) -> None:
         self.walk_r = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\walk.png",15,1)[:12]
         self.walk_l = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\walk.png",15,1,True)[:12]
-        self.stay = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\idle.png",16,1)
+        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\idle.png",16,1)
+        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\idle.png",16,1,True)
         self.jump_r = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\jump.png",33,1,False,2)
         self.jump_l = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\jump.png",33,1,True,2)
         self.frame = 0
@@ -19,11 +20,25 @@ class Player:
         self.speed_run =  speed_run
         self.gravity = gravity
         self.jump = jump
-        self.animation = self.stay
+        self.animation = self.stay_r
+        self.direction = DIRECCION_R
+        
         self.image = self.animation[self.frame]
         self.rect = self.image.get_rect()
-
         self.is_jump = False
+
+
+
+    def walk(self,direction):
+        self.direction = direction
+        if(direction == DIRECCION_R):
+            self.move_x = self.speed_walk
+            self.animation = self.walk_r
+            self.frame = 0
+        else:
+            self.move_x = -self.speed_walk
+            self.animation = self.walk_l
+            self.frame = 0
 
 
     def control(self,action):
@@ -54,7 +69,7 @@ class Player:
             self.move_x = 0
             self.move_y = 0
             self.frame = 0
-            
+    
 
     def update(self):
         if(self.frame < len(self.animation) - 1):
