@@ -36,11 +36,8 @@ class Enemy:
             self.rect.y += self.gravity
             self.move_x = self.speed_walk
             self.animation = self.walk
-            #self.frame = 0
+            self.frame = 0
     
     def draw(self,screen):
         self.image = self.animation[self.frame]
         screen.blit(self.image,self.rect)
-        
-
-

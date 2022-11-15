@@ -4,7 +4,7 @@ from constantes import *
 from auxiliar import Auxiliar
 
 class Player:
-    def __init__(self,x,y,speed_walk,speed_run,gravity,jump) -> None:
+    def __init__(self,x,y,speed_walk,speed_run,gravity,jump_power,frame_rate_ms,move_rate_ms,jump_height) -> None:
         self.walk_r = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\walk.png",15,1)[:12]
         self.walk_l = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\walk.png",15,1,True)[:12]
         self.stay_r = Auxiliar.getSurfaceFromSpriteSheet(PATH_IMAGE + r"caracters\\stink\\idle.png",16,1)
@@ -14,81 +14,111 @@ class Player:
         self.frame = 0
         self.lives = 5
         self.score = 0
-        self.move_x = x
-        self.move_y = y
+        self.move_x = 0
+        self.move_y = 0
         self.speed_walk =  speed_walk
         self.speed_run =  speed_run
         self.gravity = gravity
-        self.jump = jump
+        self.jump_power = jump_power
         self.animation = self.stay_r
-        self.direction = DIRECCION_R
-        
+        self.direction = DIRECTION_R
         self.image = self.animation[self.frame]
         self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
         self.is_jump = False
-
-
+        self.tiempo_transcurrido_animation = 0
+        self.frame_rate_ms = frame_rate_ms #se utiliza con delta_ms para determinar en do_animation 
+        self.tiempo_transcurrido_move = 0 
+        self.move_rate_ms = move_rate_ms #se utiliza con delta_ms para determinar en do_move 
+        self.y_start_jump = 0
+        self.jump_height = jump_height
+        
 
     def walk(self,direction):
-        self.direction = direction
-        if(direction == DIRECCION_R):
-            self.move_x = self.speed_walk
-            self.animation = self.walk_r
-            self.frame = 0
-        else:
-            self.move_x = -self.speed_walk
-            self.animation = self.walk_l
-            self.frame = 0
+        if(self.direction != direction or (self.animation != self.walk_r and self.animation != self.walk_l)):
+            self.frame = 0 #inicia en el frame 0 de animacion
+            self.direction = direction 
+            if(direction == DIRECTION_R):
+                self.move_x = self.speed_walk
+                self.animation = self.walk_r
+            else:
+                self.move_x = -self.speed_walk
+                self.animation = self.walk_l
+        
 
-
-    def control(self,action):
-
-        if(action == "WALK_R"):
-            self.move_x = self.speed_walk
-            self.animation = self.walk_r
-            self.frame = 0
-        elif(action == "WALK_L"):
-            self.move_x = -self.speed_walk
-            self.animation = self.walk_l
-            self.frame = 0
-        elif(action == "JUMP_R"):
-            self.move_y = -self.jump
-            self.move_x = self.speed_walk
-            self.animation = self.jump_r
+    def jump(self,on_off = True): #on_off ??
+        if(on_off and self.is_jump == False):
+            self.y_start_jump = self.rect.y
+            if(self.direction == DIRECTION_R):
+                self.move_x = self.speed_walk
+                self.move_y = -self.jump_power
+                self.animation = self.jump_r
+            else:
+                self.move_x = -self.speed_walk
+                self.move_y = -self.jump_power
+                self.animation = self.jump_l
             self.frame = 0
             self.is_jump = True
+        if(on_off == False):
+            self.is_jump = False
+            self.stay()
 
-        elif(action == "JUMP_L"):
-            self.move_y = self.jump
-            self.animation = self.jump_l
-            self.frame = 0
-            self.is_jump = True
-
-        elif(action == "STAY"):
-            self.animation = self.stay
+    def stay(self):
+        if(self.animation != self.stay_r and self.animation != self.stay_l):
+            if(self.direction == DIRECTION_R):
+                self.animation = self.stay_r
+            else:
+                self.animation = self.stay_l
             self.move_x = 0
             self.move_y = 0
             self.frame = 0
-    
 
-    def update(self):
-        if(self.frame < len(self.animation) - 1):
-            self.frame += 1 
-        else: 
-            self.frame = 0
-            if(self.is_jump == True):
-                self.is_jump = False
+    def do_movement(self,delta_ms):
+        self.tiempo_transcurrido_move += delta_ms
+        if(self.tiempo_transcurrido_move >= self.move_rate_ms):
+            if(abs(self.y_start_jump)- abs(self.rect.y) > self.jump_height and self.is_jump):
                 self.move_y = 0
 
-        self.rect.x += self.move_x
-        self.rect.y += self.move_y
+            self.tiempo_transcurrido_move = 0
+            self.rect.x += self.move_x
+            self.rect.y += self.move_y
+
+            if(self.rect.y < 500):
+                self.rect.y += self.gravity
+            elif(self.is_jump): #Â SACAR
+                self.jump(False)
+                
+
+    def do_animation(self,delta_ms):
+        self.tiempo_transcurrido_animation += delta_ms #mide el tiempo desde que empezo el juego 
+        if(self.tiempo_transcurrido_animation >= self.frame_rate_ms): 
+            self.tiempo_transcurrido_animation = 0
+            if(self.frame < len(self.animation) - 1):
+                self.frame += 1 
+            else: 
+                self.frame = 0
+
+
+
+    def update(self,delta_ms):
+        self.do_movement(delta_ms)
+        self.do_animation(delta_ms)
         
-        if(self.rect.y < 500):
-            self.rect.y += self.gravity
     
     def draw(self,screen):
         self.image = self.animation[self.frame]
         screen.blit(self.image,self.rect)
         
 
-
+    def events(self,delta_ms,keys):
+        if(keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]):
+            self.walk(DIRECTION_L)
+        if(not keys[pygame.K_LEFT] and keys[pygame.K_RIGHT]):
+            self.walk(DIRECTION_R)
+        if(not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT] and not keys[pygame.K_SPACE]):
+            self.stay()
+        if(keys[pygame.K_LEFT] and keys[pygame.K_RIGHT] and not keys[pygame.K_SPACE]):
+            self.stay()   
+        if(keys[pygame.K_SPACE]):
+            self.jump(True)

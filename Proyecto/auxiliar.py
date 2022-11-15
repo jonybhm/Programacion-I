@@ -2,11 +2,13 @@ import pygame
 
 class Auxiliar:
     @staticmethod
-    def getSurfaceFromSpriteSheet(path,columnas,filas,flip=False, step = 1):
+    def getSurfaceFromSpriteSheet(path,columnas,filas,flip=False, step = 1,scale=1):
         lista = []
         surface_imagen = pygame.image.load(path)
         fotograma_ancho = int(surface_imagen.get_width()/columnas)
         fotograma_alto = int(surface_imagen.get_height()/filas)
+        fotograma_ancho_scaled = int(fotograma_ancho*scale)
+        fotograma_alto_scaled = int(fotograma_alto*scale)
         x = 0
         
         for fila in range(filas):
@@ -14,37 +16,11 @@ class Auxiliar:
                 x = columna * fotograma_ancho
                 y = fila * fotograma_alto
                 surface_fotograma = surface_imagen.subsurface(x,y,fotograma_ancho,fotograma_alto)
+                if(scale != 1):                    
+                    surface_fotograma = pygame.transform.scale(surface_fotograma,(fotograma_ancho_scaled, fotograma_alto_scaled)).convert_alpha()
                 if(flip):
                     surface_fotograma = pygame.transform.flip(surface_fotograma,True,False)
                 lista.append(surface_fotograma)
         return lista
 
-class Auxiliar_2:
-    @staticmethod
-    def scrollingScreen(clock,scroll_speed,screen,bg,tiles,scroll):
-
-        # THIS WILL MANAGE THE SPEED OF
-        # THE SCROLLING IN PYGAME
-        clock.tick(scroll_speed)
     
-        # APPENDING THE IMAGE TO THE BACK
-        # OF THE SAME IMAGE
-        i = 0
-        while(i < tiles):
-            screen.blit(bg, (bg.get_width()*i+ scroll, 0))
-            i += 1
-        # FRAME FOR SCROLLING
-        scroll -= 6
-    
-        # RESET THE SCROLL FRAME
-        if abs(scroll) > bg.get_width():
-            scroll = 0
-        # CLOSINF THE FRAME OF SCROLLING
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                quit()
-  
-        pygame.display.update()
-
-
-        
