@@ -1,7 +1,7 @@
 SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 800
 
-PATH = r"C:\\Users\\JONY\\Desktop\\Programación\\1 er cuatrimestre\\Programacion-I\\Proyecto_2\\assets"
+PATH = r"C:\\Users\\JONY\\Desktop\\Programación\\1 er cuatrimestre\\Programacion-I\\Proyecto_shade_knight\\assets"
 
 FPS = 60
 
@@ -17,4 +17,7 @@ ANIMATION_COOLDOWN = 100 #tiempo hasta el siguiente frame
 TILE =10
 
 DEBUG_MODE = True
+
+
+
 
