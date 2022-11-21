@@ -21,6 +21,7 @@ player = Character(char_type="player",x=200,y=200,speed=8,magic=5,health=100)
 spell_group_player = pygame.sprite.Group()
 
 #informacion del nivel
+run = True
 game_start = False
 game_pause = False
 menu_selected = "main"
@@ -64,7 +65,7 @@ tiles = math.ceil(SCREEN_WIDTH /imagen_scroll.get_width()) + 1 #eliminar bufferi
 
 
 
-run = True
+
 
 while (run):
 
@@ -74,7 +75,11 @@ while (run):
     if (game_start == False): 
         
         if (menu_selected == "main"):#menu principal
-            
+            '''main_menu = FormMainMenu(main_screen)
+            main_menu.update()
+            game_start=main_menu.event_start(level)
+            menu_selected=main_menu.event_level_select_options()
+            run=main_menu.event_exit()'''
             #FONDO menu ppal
             imagen_menu = pygame.image.load(PATH + r"\\menu\\menu_widget.png").convert_alpha()
             imagen_menu = pygame.transform.scale(imagen_menu,(SCREEN_WIDTH,SCREEN_HEIGHT))
@@ -104,7 +109,9 @@ while (run):
                 menu_selected = "options"
             if(button_exit.button_pressed()):
                 run = False
-        if (menu_selected == "options"):#menu principal
+        if (menu_selected == "options"):#menu opciones
+            '''options_menu = FormOptions(main_screen)
+            options_menu.update()'''
             #FONDO menu opciones
             imagen_menu = pygame.image.load(PATH + r"\\menu\\menu_widget.png").convert_alpha()
             imagen_menu = pygame.transform.scale(imagen_menu,(SCREEN_WIDTH,SCREEN_HEIGHT))
@@ -133,7 +140,9 @@ while (run):
             if(button_back.button_pressed()):
                 menu_selected = "main"
                 
-        if (menu_selected == "levels"):#menu principal
+        if (menu_selected == "levels"):#menu seleccion nivel
+            '''levels_menu = FormLevelSelect(main_screen)
+            levels_menu.update(spell_group_player)'''
             #FONDO menu opciones
             imagen_menu = pygame.image.load(PATH + r"\\menu\\menu_widget.png").convert_alpha()
             imagen_menu = pygame.transform.scale(imagen_menu,(SCREEN_WIDTH,SCREEN_HEIGHT))
@@ -225,7 +234,9 @@ while (run):
             if(button_back.button_pressed()):
                 menu_selected = "main"
     
-    elif (game_pause == True): #menu pausa        
+    elif (game_pause == True): #menu pausa      
+        '''pause_menu = FormPause(main_screen)
+        pause_menu.update(spell_group_player,level_number)  '''
         
         #BOTONES instancio y dibujo en pantalla nueva que corresponde al nivel
         menu_pause_subtitle = Button(x=SCREEN_WIDTH//2,y=SCREEN_HEIGHT//2-200,text="PAUSA",screen=main_screen,font_size=50)

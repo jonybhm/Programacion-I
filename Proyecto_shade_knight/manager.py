@@ -2,6 +2,7 @@ from enemigos import Enemy
 import random
 from constantes import *
 import pygame
+from auxiliar import *
 
 class EnemyManager:
     def __init__(self,total_enemies,enemy_health,enemy_timer,enemy_type,enemy_scale):
@@ -28,6 +29,7 @@ class EnemyManager:
     def timer_update(self):
         if(self.timer > 0):
             self.timer -= 1
+
 
     def update(self,player):
         self.manage_enemies_update(player)
