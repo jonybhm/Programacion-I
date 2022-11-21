@@ -1,32 +1,11 @@
 import json
 import pygame
 from constantes import *
-from level import *
+from level import Level
 from manager import *
+from character import *
 
 
-class MetodoAuxiliar:
-    @staticmethod
-    def getSurfaceFromSpriteSheet(path,columnas,filas,flip=False, step = 1,scale=1):
-        lista = []
-        surface_imagen = pygame.image.load(path)
-        fotograma_ancho = int(surface_imagen.get_width()/columnas)
-        fotograma_alto = int(surface_imagen.get_height()/filas)
-        fotograma_ancho_scaled = int(fotograma_ancho*scale)
-        fotograma_alto_scaled = int(fotograma_alto*scale)
-        x = 0
-        
-        for fila in range(filas):
-            for columna in range(0,columnas,step):
-                x = columna * fotograma_ancho
-                y = fila * fotograma_alto
-                surface_fotograma = surface_imagen.subsurface(x,y,fotograma_ancho,fotograma_alto)
-                if(scale != 1):                    
-                    surface_fotograma = pygame.transform.scale(surface_fotograma,(fotograma_ancho_scaled, fotograma_alto_scaled)).convert_alpha()
-                if(flip):
-                    surface_fotograma = pygame.transform.flip(surface_fotograma,True,False)
-                lista.append(surface_fotograma)
-        return lista
 
 
 def show_text_on_screen(x,y,text,screen,font_size):
@@ -46,7 +25,7 @@ def load_json(path:str)->list:
 
     return dic_file["levels"]
 
-'''def restart_level(group_spells_player,group_spells_enemies,group_platforms,group_items,level_number):
+def restart_level(group_spells_player,group_spells_enemies,group_platforms,group_items,level_number):
     group_spells_player.empty()
     group_spells_enemies.empty()
     group_platforms.empty()
@@ -71,8 +50,13 @@ def restart_enemies(group_enemies,level_number):
     enemy_type=level_info[level_number]["enemy_type"],enemy_timer=level_info[level_number]["enemy_timer"],
     enemy_health=level_info[level_number]["enemy_health"],enemy_scale=level_info[level_number]["enemy_scale"])
 
-    return enemies'''
+    return enemies
+
+def restart_player():
     
+    player = Character(char_type="player",x=200,y=200,speed=8,magic=5,health=100)
+
+    return player
     
 
 

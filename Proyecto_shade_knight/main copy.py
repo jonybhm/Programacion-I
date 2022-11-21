@@ -2,7 +2,7 @@ import pygame
 import json
 from constantes import *
 from character import *
-from auxiliares import *
+from auxiliar import *
 from spell import *
 from items import *
 from plataforma import *
@@ -17,7 +17,7 @@ main_screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 pygame.display.set_caption("Shade Knigth")
 
 #player
-player = Character(char_type="player",x=200,y=200,speed=8,magic=5)
+player = Character(char_type="player",x=200,y=200,speed=8,magic=5,health=100)
 spell_group_player = pygame.sprite.Group()
 
 #informacion del nivel
@@ -154,14 +154,74 @@ while (run):
             button_level_3.draw()
             #ACCIONES DE BOTONES
             if(button_level_1.button_pressed()):
-                level_number = 0
+                player = restart_player()
+                level = restart_level(spell_group_player,spell_group_enemy,platform_group,items_group,level_number=0)
+                #background
+                imagen_scroll = level.generate_background()
+                #items
+                health=level.generate_health_update()
+                magic=level.generate_magic_update()
+                money=level.generate_money_update()
+                items_group = level.items_group
+                #platforms
+                level.generate_platforms()
+                platform_group = level.platform_group
+                
+                enemies = restart_enemies(enemy_group,level_number=0)
+                #enemies
+                enemies.manage_enemies_update(player)
+                enemy_group = enemies.managed_enemy_group
+                spell_group_enemy = level.spell_group_enemy
+                level_number=0
                 game_start = True
+                pygame.mixer.music.stop()
+                level.generate_music()
             if(button_level_2.button_pressed()):
-                level_number = 1
+                player = restart_player()
+                level = restart_level(spell_group_player,spell_group_enemy,platform_group,items_group,level_number=1)
+                #background
+                imagen_scroll = level.generate_background()
+                #items
+                health=level.generate_health_update()
+                magic=level.generate_magic_update()
+                money=level.generate_money_update()
+                items_group = level.items_group
+                #platforms
+                level.generate_platforms()
+                platform_group = level.platform_group
+                
+                enemies = restart_enemies(enemy_group,level_number=1)
+                #enemies
+                enemies.manage_enemies_update(player)
+                enemy_group = enemies.managed_enemy_group
+                spell_group_enemy = level.spell_group_enemy
+                level_number=1
                 game_start = True
+                pygame.mixer.music.stop()
+                level.generate_music()
             if(button_level_3.button_pressed()):
-                level_number = 2
+                player = restart_player()
+                level = restart_level(spell_group_player,spell_group_enemy,platform_group,items_group,level_number=2)
+                #background
+                imagen_scroll = level.generate_background()
+                #items
+                health=level.generate_health_update()
+                magic=level.generate_magic_update()
+                money=level.generate_money_update()
+                items_group = level.items_group
+                #platforms
+                level.generate_platforms()
+                platform_group = level.platform_group
+                
+                enemies = restart_enemies(enemy_group,level_number=2)
+                #enemies
+                enemies.manage_enemies_update(player)
+                enemy_group = enemies.managed_enemy_group
+                spell_group_enemy = level.spell_group_enemy
+                level_number=2
                 game_start = True
+                pygame.mixer.music.stop()
+                level.generate_music()
             if(button_back.button_pressed()):
                 menu_selected = "main"
     
@@ -184,7 +244,8 @@ while (run):
         if(button_resume.button_pressed()):
             game_pause = False
         if(button_level_restart.button_pressed()):
-            '''restart_level(spell_group_player,spell_group_enemy,platform_group,items_group,level_number)
+            player = restart_player()
+            level = restart_level(spell_group_player,spell_group_enemy,platform_group,items_group,level_number)
             #background
             imagen_scroll = level.generate_background()
             #items
@@ -196,16 +257,23 @@ while (run):
             level.generate_platforms()
             platform_group = level.platform_group
             
-            restart_enemies(enemy_group,level_number)
             #enemies
+            enemies = restart_enemies(enemy_group,level_number)
             enemies.manage_enemies_update(player)
             enemy_group = enemies.managed_enemy_group
             spell_group_enemy = level.spell_group_enemy
-'''            
-            pass
+            
+            game_pause = False
+            pygame.mixer.music.stop()
+            level.generate_music()
+            
         if(button_return_main_menu.button_pressed()):
             game_start = False
             menu_selected = "main"
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load(PATH + r"\\music\\main_menu.wav")
+            pygame.mixer.music.set_volume(0.3)
+            pygame.mixer.music.play(-1,0.0,7000)
 
     else:
          

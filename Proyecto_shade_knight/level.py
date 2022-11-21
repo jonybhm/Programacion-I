@@ -1,7 +1,7 @@
 import pygame
 from constantes import *
 from character import *
-from auxiliar3 import *
+from auxiliar import *
 from spell import *
 from items import *
 from plataforma import *
